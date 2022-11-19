@@ -16,28 +16,28 @@ import stripe
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-class StripeCheckouView(APIView):
-    def post(self, request):
-        try:
-            checkout_session = stripe.checkout.Session.create(
-                line_items=[
-                    {
-                        # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-                        'price': 'price_1M5ENpFMeCnnC3tGULsHZtjy',
-                        'quantity': 1,
-                    },
-                ],
-                mode='payment',
-                success_url=settings.SITE_URL +'/success',
-                cancel_url=settings.SITE_URL + '/cancel',
-            )
+# class StripeCheckouView(APIView):
+#     def post(self, request):
+#         try:
+#             checkout_session = stripe.checkout.Session.create(
+#                 line_items=[
+#                     {
+#                         # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+#                         'price': 'price_1M5ENpFMeCnnC3tGULsHZtjy',
+#                         'quantity': 1,
+#                     },
+#                 ],
+#                 mode='payment',
+#                 success_url=settings.SITE_URL +'/success',
+#                 cancel_url=settings.SITE_URL + '/cancel',
+#             )
 
-            return redirect(checkout_session.url,)
-        except Exception as e:
-            return Response(
-                {'error': 'Something went wrong while creating stripe checkout session'},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+#             return redirect(checkout_session.url,)
+#         except Exception as e:
+#             return Response(
+#                 {'error': 'Something went wrong while creating stripe checkout session'},
+#                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
+#             )
 
 
 class RentalView(APIView):
