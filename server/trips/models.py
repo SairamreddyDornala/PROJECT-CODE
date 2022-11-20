@@ -49,7 +49,7 @@ class Trip(models.Model):
         on_delete=models.DO_NOTHING,
         related_name='trips_as_rider'
     )
-    price = models.IntegerField(default=0)
+    price = models.FloatField(default=0.0)
     paid = models.BooleanField(default=False)
 
     def __str__(self):

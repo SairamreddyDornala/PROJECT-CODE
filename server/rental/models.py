@@ -1,4 +1,3 @@
-from email import message
 from django.db import models
 from trips.models import User
 import uuid
@@ -36,7 +35,9 @@ def __str__(self):
 
 
 class Email(models.Model):
+    name = models.CharField(max_length=254, default="name")
     email = models.EmailField(max_length=254)
+    message = models.TextField(default="message")
 
     def __str__(self):
         return "{}".format(self.email)

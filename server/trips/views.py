@@ -29,6 +29,7 @@ class TripView(APIView):
 
     def post(self, request, format=None, *args, **kwargs):
         serializer = TripSerializer(data=request.data)
+        print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
