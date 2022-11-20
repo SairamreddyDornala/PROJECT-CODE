@@ -1,10 +1,11 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col, Form, FormGroup, Input } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/CommonSection";
+import Axios from "axios";
 
 import "../styles/contact.css";
+import { useState } from "react";
 
 const socialLinks = [
   {
@@ -26,6 +27,27 @@ const socialLinks = [
 ];
 
 const Contact = () => {
+  const [name, setName] = useState();
+  const [email, setEmail] = useState();
+  const [message, setMessage] = useState();
+
+  const submitContact = e => {
+    e.preventDefault();
+    console.log(message)
+
+    Axios.post('/api/rental/email/', {
+      name: name,
+      email: email,
+      message: message
+    })
+    .then(response => {
+      alert("Your message has been sent successfully!")
+    })
+    .catch(error => {
+      alert("Please fill in the form to continue!")
+    })
+  }
+
   return (
     <Helmet title="Contact">
       <CommonSection title="Contact" />
@@ -35,18 +57,19 @@ const Contact = () => {
             <Col lg="7" md="7">
               <h6 className="fw-bold mb-4">Get In Touch</h6>
 
-              <Form>
+              <Form onSubmit={submitContact} method="POST">
                 <FormGroup className="contact__form">
-                  <Input placeholder="Your Name" type="text" />
+                  <Input placeholder="Your Name" type="text" onChange={e => setName(e.target.value)} />
                 </FormGroup>
                 <FormGroup className="contact__form">
-                  <Input placeholder="Email" type="email" />
+                  <Input placeholder="Email" type="email" onChange={e => setEmail(e.target.value)} />
                 </FormGroup>
                 <FormGroup className="contact__form">
                   <textarea
                     rows="5"
                     placeholder="Message"
                     className="textarea"
+                    onChange={e => setMessage(e.target.value)}
                   ></textarea>
                 </FormGroup>
 
@@ -60,16 +83,16 @@ const Contact = () => {
               <div className="contact__info">
                 <h6 className="fw-bold">Contact Information</h6>
                 <p className="section__description mb-0">
-                  123 South pole
+                  Denton of Texas
                 </p>
                 <div className=" d-flex align-items-center gap-2">
                   <h6 className="fs-6 mb-0">Phone:</h6>
-                  <p className="section__description mb-0">+0000000</p>
+                  <a className="section__description mb-0" href="tel:+1 (940) 758-4883">+1 (940) 758-4883</a>
                 </div>
 
                 <div className=" d-flex align-items-center gap-2">
                   <h6 className="mb-0 fs-6">Email:</h6>
-                  <p className="section__description mb-0">example@gmail.com</p>
+                  <a className="section__description mb-0" href="mailto:sairam61099@gmail.com">sairam61099@gmail.com</a>
                 </div>
 
                 <h6 className="fw-bold mt-4">Follow Us</h6>

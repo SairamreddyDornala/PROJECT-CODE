@@ -37,9 +37,9 @@ const Header = () => {
             <Col lg="6" md="6" sm="6">
               <div className="header__top__left">
                 <span>Need Help?</span>
-                <span className="header__top__help">
-                  <i class="ri-phone-fill"></i> +00(0000)
-                </span>
+                <a className="header__top__help text-decoration-none text-white" href="tel: +1 (940) 758-4883">
+                  <i class="ri-phone-fill"></i> +1 (940) 758-4883
+                </a>
               </div>
             </Col>
 
@@ -60,7 +60,7 @@ const Header = () => {
                   <Link to="/home" className=" d-flex align-items-center gap-2">
                     <i class="ri-car-line"></i>
                     <span>
-                      Asap car services
+                      Asap cab services
                     </span>
                   </Link>
                 </h1>
@@ -73,8 +73,8 @@ const Header = () => {
                   <i class="ri-earth-line"></i>
                 </span>
                 <div className="header__location-content">
-                  <h4>Antarctica</h4>
-                  <h6>Southpole</h6>
+                  <h4>USA</h4>
+                  <h6>Texas</h6>
                 </div>
               </div>
             </Col>

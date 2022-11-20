@@ -38,16 +38,15 @@ const Footer = () => {
                 <Link to="/home" className=" d-flex align-items-center gap-2">
                   <i class="ri-car-line"></i>
                   <span>
-                  Book Ride or Rent Car<br /> Service
+                    ASAP CAB SERVICES
                   </span>
                 </Link>
               </h1>
             </div>
             <p className="footer__logo-content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consequuntur, distinctio, itaque reiciendis ab cupiditate harum ex
-              quam veniam, omnis expedita animi quibusdam obcaecati mollitia?
-              Delectus et ad illo recusandae temporibus?
+              We are ASAP CAB SERVICES, the car rental and cab services are available
+              at denton of texas. We are dedicated to ensure the quality and satisfaction
+              of people like you who takes our services.
             </p>
           </Col>
 
@@ -67,10 +66,10 @@ const Footer = () => {
           <Col lg="3" md="4" sm="6">
             <div className="mb-4">
               <h5 className="footer__link-title mb-4">Head Office</h5>
-              <p className="office__info">123 Street</p>
-              <p className="office__info">Phone: +00</p>
+              <p className="office__info">Denton of Texas</p>
+              <p className="office__info">Phone: +1 (940) 758-4883</p>
 
-              <p className="office__info">Email: @gmail.com</p>
+              <p className="office__info">Email: @sairam61099@gmail.com</p>
 
               <p className="office__info">Office Time: 10am - 4pm</p>
             </div>
