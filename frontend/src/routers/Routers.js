@@ -87,9 +87,7 @@ const Routers = () => {
       <Route
         path="*"
         element={
-          <PrivateRoute>
             <NotFound />
-          </PrivateRoute>
         }
       />
       <Route
@@ -116,6 +114,8 @@ const Routers = () => {
           </PrivateRoute>
         }
       />
+      <Route path="/reset-password" element={<ResetPassword />} />
+      <Route path="/reset-password-confirm/:token" element={<ResetpasswordConfirm />} />
     </Routes>
   );
 };

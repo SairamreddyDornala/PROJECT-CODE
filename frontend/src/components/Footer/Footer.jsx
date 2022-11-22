@@ -69,7 +69,7 @@ const Footer = () => {
               <p className="office__info">Denton of Texas</p>
               <p className="office__info">Phone: +1 (940) 758-4883</p>
 
-              <p className="office__info">Email: @sairam61099@gmail.com</p>
+              <p className="office__info">Email: sairam61099@gmail.com</p>
 
               <p className="office__info">Office Time: 10am - 4pm</p>
             </div>

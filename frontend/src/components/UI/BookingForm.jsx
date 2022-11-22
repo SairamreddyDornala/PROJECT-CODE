@@ -4,7 +4,6 @@ import { Form, FormGroup } from "reactstrap";
 import { Autocomplete } from "@react-google-maps/api";
 import PaymentMethod from "./PaymentMethod";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
 
 const BookingForm = () => {
   const user = JSON.parse(localStorage.getItem("user"))
@@ -14,8 +13,6 @@ const BookingForm = () => {
   const [fromDate, setFromdate] = useState('');
   const [ToDate, setTodate] = useState('');
   const [result, setResult] = useState();
-  let navigate = useNavigate();
-
 
   const submitBooking = e => {
     e.preventDefault();

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Placeholder } from "reactstrap";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { Form, Col, FormGroup, Row, Input, ButtonGroup } from "reactstrap";
-import { FaTimes, FaLocationArrow, } from "react-icons/fa"
+import { FaTimes, FaLocationArrow} from "react-icons/fa"
 import TripModal from "../components/UI/TripModal";
 import axios from 'axios';
 
@@ -13,8 +13,6 @@ import {
     Autocomplete,
     DirectionsRenderer,
 } from "@react-google-maps/api";
-
-const center = { lat: 48.8584, lng: 2.2945 };
 
 const Test2 = (args) => {
     const { isLoaded } = useJsApiLoader({
@@ -33,6 +31,39 @@ const Test2 = (args) => {
     const [destination, setDestination] = useState('');
 
     const [message, setMessage] = useState("");
+    const [lat, setLat] = useState("");
+    const [lng, setLng] = useState("");
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(showPosition, posError); // get users location
+        } else {
+            alert("Sorry, Geolocation is not supported by this browser.")
+        }
+    }, [])
+
+    const posError = () => {
+        if (navigator.permissions) {
+            navigator.permissions.query({ name: "geolocation" }).then((res) => {
+                if (res.state === "denied") {
+                    alert(
+                        "Enable location permissions for this website in your browser settings."
+                    );
+                }
+            });
+        } else {
+            alert(
+                "Unable to access your location. You can continue by submitting location manually."
+            ); // Obtaining Lat/long from address necessary
+        }
+    };
+
+    const showPosition = (position) => {
+        setLat(position.coords.latitude); // You have obtained latitude coordinate!
+        setLng(position.coords.longitude); // You have obtained longitude coordinate!
+    };
+
+    const center = { lat: lat, lng: lng }
 
     /** @type React.MutableRefObject<HTMLInputElement> */
     const originRef = useRef();
@@ -56,11 +87,9 @@ const Test2 = (args) => {
     }
 
 
-
     async function calculateRoute() {
-        console.log(originRef.current.value)
         if (origin === '' || destination === '') {
-            return
+            alert("Fill in the form to continue");
         }
         // eslint-disable-next-line no-undef
         const directionsService = new google.maps.DirectionsService()
@@ -76,7 +105,7 @@ const Test2 = (args) => {
 
     }
     let newdistance = distance.replace(/\D/g, '');
-    const price = newdistance * 2.70;
+    const price = (newdistance * 2.70).toFixed(2);
     function clearRoute() {
         setDirectionsResponse(null)
         setDistance('')
@@ -97,14 +126,14 @@ const Test2 = (args) => {
             drop_off_address: destination,
             price: price,
         })
-        .then(response=> {
-            alert("Driver arriving shortly")
-            setMessage("Driver will be arriving shortly");
-        })
-        .catch(error=> {
-            alert("Error! fill in the form to continue.")
-            console.log(error)
-        })
+            .then(response => {
+                alert("Driver arriving shortly")
+                setMessage("Driver will be arriving shortly");
+            })
+            .catch(error => {
+                alert("Error! fill in the form to continue.")
+                console.log(error)
+            })
     }
 
 
@@ -116,7 +145,7 @@ const Test2 = (args) => {
                 <Form className="p-2" onSubmit={handleSubmit} method="POST">
 
                     <Row>
-                        <Col md={6}>
+                        <Col md={5}>
                             <FormGroup>
                                 <Input name="rider" ref={userRef} hidden value={userId}></Input>
                                 <Autocomplete>
@@ -131,7 +160,7 @@ const Test2 = (args) => {
                                 </Autocomplete>
                             </FormGroup>
                         </Col>
-                        <Col md={6}>
+                        <Col md={5}>
                             <FormGroup>
                                 <Autocomplete>
                                     <Input
@@ -145,6 +174,13 @@ const Test2 = (args) => {
                                 </Autocomplete>
                             </FormGroup>
                         </Col>
+                        <Col md={2}>
+                            <FormGroup>
+                                <Button type="button" color="light" onClick={() => map.panTo(center)} title="Your location">
+                                    <FaLocationArrow />
+                                </Button>
+                            </FormGroup>
+                        </Col>
                     </Row>
                     <div className="d-flex justify-content-between">
                         <p>Distance: {distance}</p>
@@ -152,8 +188,8 @@ const Test2 = (args) => {
                         <p>Price: ${price}</p>
                     </div>
                     <ButtonGroup>
-                    <Button className="btn-sm" type="button" onClick={calculateRoute}>Calculate Route</Button>
-                    <Button className="btn-sm btn-danger" type="button" onClick={clearRoute}>Clear</Button>
+                        <Button className="btn-sm" type="button" onClick={calculateRoute}>Calculate Route</Button>
+                        <Button className="btn-sm btn-danger" type="button" onClick={clearRoute}>Clear</Button>
                     </ButtonGroup>
                     <Button className="btn-sm mx-4" color="primary" type="submit">Confirm</Button>
                 </Form>
