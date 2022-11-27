@@ -19,6 +19,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class StripeCheckouView(APIView):
     def post(self, request):
         try:
+            pricing_session = stripe.Price.create
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
