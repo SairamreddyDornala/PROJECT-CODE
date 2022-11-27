@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Placeholder } from "reactstrap";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Spinner } from "reactstrap";
 import { Form, Col, FormGroup, Row, Input, ButtonGroup } from "reactstrap";
-import { FaTimes, FaLocationArrow} from "react-icons/fa"
-import TripModal from "../components/UI/TripModal";
+import { FaTimes, FaLocationArrow } from "react-icons/fa"
 import axios from 'axios';
+
+import 'react-notifications/lib/notifications.css';
+import { NotificationContainer, NotificationManager } from 'react-notifications';
+
 
 import {
     useJsApiLoader,
@@ -30,9 +33,10 @@ const Test2 = (args) => {
     const [origin, setOrigin] = useState('');
     const [destination, setDestination] = useState('');
 
-    const [message, setMessage] = useState("");
+    const [pay, setPay] = useState(true);
     const [lat, setLat] = useState("");
     const [lng, setLng] = useState("");
+    const [tripId, setTripId] = useState("");
 
     useEffect(() => {
         if (navigator.geolocation) {
@@ -117,8 +121,33 @@ const Test2 = (args) => {
     const user = JSON.parse(localStorage.getItem("user"))
     const userId = user["user_id"]
 
+    const createNotification = (type) => {
+        console.log(type)
+        return () => {
+            switch (type) {
+                case 'info':
+                    NotificationManager.info('Info message');
+                    break;
+                case 'success':
+                    NotificationManager.success('Success message', 'Title here');
+                    break;
+                case 'warning':
+                    NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
+                    break;
+                case 'error':
+                    NotificationManager.error('Error message', 'Click me!', 5000, () => {
+                        alert('callback');
+                    });
+                    break;
+            }
+        };
+    };
+
+
     const handleSubmit = e => {
         e.preventDefault();
+        NotificationManager.info('Info message');
+
 
         axios.post('/api/trips/', {
             rider: userId,
@@ -127,13 +156,27 @@ const Test2 = (args) => {
             price: price,
         })
             .then(response => {
-                alert("Driver arriving shortly")
-                setMessage("Driver will be arriving shortly");
+                setPay(false);
+                setTripId(response.data.id);
+                alert("Driver will be arriving shortly")
             })
             .catch(error => {
-                alert("Error! fill in the form to continue.")
-                console.log(error)
+                alert("Error! fill in the form to continue. Contact admin for help")
             })
+    }
+
+    const handlePayment = e => {
+        alert('You are about to be redirected to the payments page.')
+        axios.post('/api/trips/payment/', {
+            trip: tripId,
+            price: price
+        })
+        .then (response => {
+            window.location.href = response.data //redirect to stripe checkout
+        })
+        .catch(error => {
+            alert("Error processing payment. Please try again later")
+        })
     }
 
 
@@ -191,7 +234,15 @@ const Test2 = (args) => {
                         <Button className="btn-sm" type="button" onClick={calculateRoute}>Calculate Route</Button>
                         <Button className="btn-sm btn-danger" type="button" onClick={clearRoute}>Clear</Button>
                     </ButtonGroup>
-                    <Button className="btn-sm mx-4" color="primary" type="submit">Confirm</Button>
+                    <Button className="btn-sm mx-4" color="primary" type="submit">Confirm</Button>{' '}
+                    <Button type="button" className="btn-sm my-auto" color="success" hidden={pay} onClick={handlePayment}>
+                    <Spinner
+                        color="white"
+                        size="sm"
+                        type="grow"
+                    >
+                        Loading...
+                        </Spinner> <span>Pay Now</span></Button>
                 </Form>
 
             </div>

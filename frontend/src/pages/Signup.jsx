@@ -79,7 +79,10 @@ const Signup = () => {
             />
             <p>{password2 !== password1 ? "Passwords do not match" : ""}</p>
         </div>
-        <br />
+        <div>
+            <input type="checkbox" id="rider" name="rider" value="True"/>{' '}
+            <label for="rider">Become a rider</label>
+        </div>
         <br />
         <button className='btn btn-primary' type='submit'>Register</button>
     </form>
